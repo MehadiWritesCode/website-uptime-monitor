@@ -1,11 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
+import { Suspense } from "react";
+import { getUser } from "@/lib/supabase/get-user";
 
-export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+// Reads the session (runtime data), so it lives inside its own Suspense boundary.
+async function UserEmail() {
+  const user = await getUser();
 
+  return (
+    <p className="mt-4 text-sm text-neutral-500">Signed in as {user?.email}</p>
+  );
+}
+
+export default function DashboardPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
       <div className="flex items-center justify-between">
@@ -16,9 +21,12 @@ export default async function DashboardPage() {
           </button>
         </form>
       </div>
-      <p className="mt-4 text-sm text-neutral-500">
-        Signed in as {user?.email}
-      </p>
+
+      <Suspense
+        fallback={<p className="mt-4 text-sm text-neutral-500">Loading…</p>}
+      >
+        <UserEmail />
+      </Suspense>
     </main>
   );
 }
