@@ -38,7 +38,7 @@ export async function createSite(
     return { error: "Could not create the site. Please try again." };
 
   revalidatePath("/sites");
-  redirect(`/sites/${data.id}`);
+  redirect(`/sites?open=${data.id}`);
 }
 
 export async function deleteSite(formData: FormData): Promise<void> {

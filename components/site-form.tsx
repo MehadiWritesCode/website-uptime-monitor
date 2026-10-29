@@ -46,7 +46,7 @@ export function SiteForm() {
       )}
 
       <button type="submit" disabled={pending} className={primaryButton}>
-        {pending ? "Creating…" : "Create site"}
+        {pending ? "Creating…" : "Create site & add endpoints"}
       </button>
     </form>
   );

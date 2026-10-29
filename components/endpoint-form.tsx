@@ -118,7 +118,7 @@ export function EndpointForm({ siteId }: { siteId: string }) {
       )}
       {state?.ok && (
         <p role="status" className="text-sm text-green-700 dark:text-green-400">
-          Endpoint added. The first check runs on the next scheduler tick.
+          Endpoint added. Add another below, or close this panel.
         </p>
       )}
 

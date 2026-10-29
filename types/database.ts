@@ -221,6 +221,25 @@ export type Database = {
           window_label: string
         }[]
       }
+      endpoints_overview: {
+        Args: never
+        Returns: {
+          avg_ms: number
+          checks: number
+          endpoint_id: string
+          ok_count: number
+          uptime_pct: number
+        }[]
+      }
+      endpoints_recent_results: {
+        Args: { p_limit?: number }
+        Returns: {
+          checked_at: string
+          endpoint_id: string
+          ok: boolean
+          response_ms: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

@@ -47,6 +47,7 @@ export async function createEndpoint(
     };
   }
 
+  revalidatePath("/sites");
   revalidatePath(`/sites/${siteId.data}`);
   return { ok: true };
 }
@@ -64,6 +65,7 @@ export async function toggleEndpoint(formData: FormData): Promise<void> {
     .update({ is_active: active })
     .eq("id", id.data);
 
+  revalidatePath("/sites");
   revalidatePath(`/sites/${siteId.data}`);
 }
 
@@ -75,6 +77,7 @@ export async function deleteEndpoint(formData: FormData): Promise<void> {
   const supabase = await createClient();
   await supabase.from("endpoints").delete().eq("id", id.data);
 
+  revalidatePath("/sites");
   revalidatePath(`/sites/${siteId.data}`);
 }
 
@@ -123,6 +126,7 @@ export async function updateEndpoint(
     return { error: "Could not save changes. Please try again." };
   }
 
+  revalidatePath("/sites");
   revalidatePath(`/sites/${siteId.data}`);
   revalidatePath(`/sites/${siteId.data}/endpoints/${id.data}`);
   return { ok: true };

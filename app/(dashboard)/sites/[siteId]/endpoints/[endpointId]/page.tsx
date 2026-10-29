@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { BackLink } from "@/components/back-link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -20,11 +20,16 @@ function formatDuration(ms: number): string {
   return `${Math.floor(h / 24)}d ${h % 24}h`;
 }
 
+function getNow() {
+  return Date.now();
+}
+
 const card = "rounded-xl border border-neutral-200 p-4 dark:border-neutral-800";
 
 async function EndpointDetail({ params }: { params: Params }) {
   const { siteId, endpointId } = await params;
   await getUser(); // request-time from here on (Date.now() below is safe)
+  const now = getNow();
 
   if (
     !idSchema.safeParse(siteId).success ||
@@ -82,12 +87,7 @@ async function EndpointDetail({ params }: { params: Params }) {
 
   return (
     <>
-      <Link
-        href={`/sites/${site.id}`}
-        className="text-sm text-neutral-500 hover:underline"
-      >
-        ← {site.name}
-      </Link>
+      <BackLink href={`/sites?open=${site.id}`}>{site.name}</BackLink>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <span className="rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-xs dark:bg-neutral-800">
@@ -144,9 +144,7 @@ async function EndpointDetail({ params }: { params: Params }) {
       ) : (
         <ul className="mt-3 flex flex-col gap-3">
           {incidents.map((i) => {
-            const end = i.resolved_at
-              ? new Date(i.resolved_at).getTime()
-              : Date.now();
+            const end = i.resolved_at ? new Date(i.resolved_at).getTime() : now;
             return (
               <li key={i.id} className={card}>
                 <p className="text-sm">
