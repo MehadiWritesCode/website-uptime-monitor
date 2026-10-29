@@ -82,7 +82,12 @@ async function SiteDetail({ params }: { params: Promise<{ siteId: string }> }) {
                   <span className="rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-xs dark:bg-neutral-800">
                     {ep.method}
                   </span>
-                  <span className="break-all font-mono text-sm">{ep.path}</span>
+                  <Link
+                    href={`/sites/${site.id}/endpoints/${ep.id}`}
+                    className="break-all font-mono text-sm font-medium hover:underline"
+                  >
+                    {ep.path}
+                  </Link>
                   <StatusBadge
                     status={ep.current_status}
                     active={ep.is_active}
@@ -90,6 +95,12 @@ async function SiteDetail({ params }: { params: Promise<{ siteId: string }> }) {
                 </div>
 
                 <div className="flex gap-2">
+                  <Link
+                    href={`/sites/${site.id}/endpoints/${ep.id}`}
+                    className={secondaryButton}
+                  >
+                    Details
+                  </Link>
                   <form action={toggleEndpoint}>
                     <input type="hidden" name="id" value={ep.id} />
                     <input type="hidden" name="siteId" value={site.id} />

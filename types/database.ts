@@ -197,7 +197,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      endpoint_response_series: {
+        Args: {
+          p_bucket_minutes?: number
+          p_endpoint_id: string
+          p_hours?: number
+        }
+        Returns: {
+          avg_ms: number
+          bucket: string
+          checks: number
+          failures: number
+          max_ms: number
+        }[]
+      }
+      endpoint_uptime: {
+        Args: { p_endpoint_id: string }
+        Returns: {
+          avg_ms: number
+          ok_count: number
+          total: number
+          uptime_pct: number
+          window_label: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
