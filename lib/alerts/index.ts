@@ -1,3 +1,4 @@
+import { sendDiscord } from "./discord";
 import { sendTelegram } from "./telegram";
 
 export type AlertEvent = {
@@ -17,8 +18,12 @@ export async function sendAlert(event: AlertEvent): Promise<void> {
       ? `🔴 DOWN: ${target}\n${url}\nReason: ${event.error ?? "unknown"}`
       : `🟢 RECOVERED: ${target}\n${url}`;
 
-  // an alert failure must never break the check run
-  const results = await Promise.allSettled([sendTelegram(text)]);
+  // every channel is optional (skipped when its env vars are missing);
+  // one failing channel must never break the check run or the other channels
+  const results = await Promise.allSettled([
+    sendTelegram(text),
+    sendDiscord(event),
+  ]);
   results.forEach((r) => {
     if (r.status === "rejected") console.error("[alert]", r.reason);
   });
